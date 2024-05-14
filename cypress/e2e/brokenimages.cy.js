@@ -11,4 +11,26 @@ describe('Broken Images test', () => {
             expect($img[0].naturalHeight).to.be.greaterThan(0);
         });
     });
+
+    it('Checks and reports what about images is broken', () => {
+        cy.visit('/broken_images');
+        const brokenImages = []
+        cy.get('img').each(($el, k) => {
+            if ($el.prop('naturalWidth') === 0) {
+                const id = $el.attr('id')
+                const alt = $el.attr('alt')
+                const info = `${id ? '#' + id : ''} ${alt ? alt : ''}`
+                brokenImages.push(info)
+                cy.log(`Broken image ${k + 1}: ${info}`)
+            }
+        }).then(() => {
+            if (brokenImages.length) {
+                throw new Error(
+                    `Found ${
+                        brokenImages.length
+                    } broken images\n${brokenImages.join(', ')}`,
+                )
+            }
+        })
+    })
 });
