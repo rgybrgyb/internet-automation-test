@@ -30,7 +30,7 @@ describe('basic auth test', () => {
       expect(response.status).to.eq(200)
     })
   })
-  it('sends a request with bad credentials to the page and gets 401', () => {
+  it('sends a request with invalid credentials to the page and gets 401', () => {
     cy.request({
       method: 'GET',
       url: '/basic_auth',
