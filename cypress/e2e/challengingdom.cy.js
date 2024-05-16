@@ -17,4 +17,18 @@ describe('Challenging DOM test', () => {
         .find('td').eq(2)
         .contains('Adipisci3')
     })
+    it('Locates table cell in last column, last row and clicks "edit"', () => {
+        cy.get('table')
+        .find('tr').last()
+        .find('td').last()
+        .find('a').first()
+        .click
+    })
+    it('Locates table cell in last column, 5th row and clicks "delete"', () => {
+        cy.get('table')
+        .find('tr').eq(5)
+        .find('td').last()
+        .find('a').last()
+        .click
+    })
 })
