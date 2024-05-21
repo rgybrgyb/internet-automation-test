@@ -23,3 +23,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// Drag Command - https://stackoverflow.com/questions/55361499/how-to-implement-drag-and-drop-in-cypress-test
+// Add typings for the custom drag command (Typescript only?)
+  // declare global {
+   // namespace Cypress {
+        // interface Chainable {
+            // drag: (dragSelector: string, dropSelector: string) => Chainable;
+        // }
+    // }
+// }
+// Finally add the custom command
+Cypress.Commands.add('drag', drag);
