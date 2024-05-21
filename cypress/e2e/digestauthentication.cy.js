@@ -1,0 +1,1 @@
+//Placeholder as digest authentication may be beyond Cypress' capabilities. More research TBD
