@@ -9,8 +9,8 @@ describe('Entry Ad test', () => {
         cy.intercept('POST', '**/entry-ad').as('getPost')
         cy.get('.modal').should('not.be.visible')
         cy.get('#restart-ad').click()
-        cy.wait(50000)
-        cy.reload
+        cy.wait(20000)
+        cy.visit('/entry_ad')
         cy.get('.modal').should('be.visible')
     })
 })

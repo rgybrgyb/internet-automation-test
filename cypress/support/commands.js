@@ -35,4 +35,6 @@
 //  }
 // // Finally add the custom command
 // Cypress.Commands.add('drag', drag);
-require('@4tw/cypress-drag-drop')
+Cypress.Commands.add('logError', (message) => {
+    cy.task('log', message);
+  });
