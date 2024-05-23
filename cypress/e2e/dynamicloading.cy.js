@@ -1,4 +1,4 @@
-describe('Dynamic Controls test', () => {
+describe('Dynamic Loading test', () => {
     it('Checks that there is no text, clicks the button, then checks that there is text on page 1', () => {
         cy.visit('/dynamic_loading/1')
         cy.get('#finish > h4').should('not.be.visible')
