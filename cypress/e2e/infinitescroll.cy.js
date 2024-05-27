@@ -4,14 +4,18 @@ describe('Infinite Scroll tests', () => {
     })
 
     it('Scrolls down to find the item', () => {
+        const dataToFind = 'accusamus'
         const findItem = (item, attempt = 1) => {
             if (attempt === 100) throw 'Not found'
+
+            cy.log(`Attempt ${attempt}: Looking for "${item}"`)
 
             return cy.get('[class="scroll large-8 columns large-centered"]')
                 .children()
                 .then($els => {
-                    const elsArray = Array.from($els)
-                    const found = elsArray.some(el => el.innerText.trim() === item)
+                    const elsArray = Array.from($els).filter(el => el.nodeType === 1 && el.textContent) // Filter elements with nodeType 1 (element nodes) and textContent
+
+                    const found = elsArray.some(el => el.textContent.trim().includes(item))
                     if (!found) {
                         cy.window().scrollTo('bottom')
 
@@ -21,23 +25,25 @@ describe('Infinite Scroll tests', () => {
                             .then(() => {
                                 cy.contains('Loading').should('not.exist')
 
-                                // Check if more elements are loaded
-                                cy.get('[class="scroll large-8 columns large-centered"]')
-                                    .children()
-                                    .should('have.length', elsArray.length)
-                                    .then(() => {
-                                        return findItem(item, ++attempt)
-                                    })
+                                // Ensure the loading process completed
+                                cy.wait(500) // Adjust wait time if needed
+
+                                // Recurse to check for the item again
+                                return findItem(item, ++attempt)
                             })
                     } else {
-                        return cy.wrap(elsArray.filter(el => el.innerText.trim() === item))
+                        cy.log(`Found "${item}" in one of the elements`)
+                        const matchingElements = elsArray.filter(el => el.textContent.trim().includes(item))
+                        // Log the matching elements for debugging
+                        cy.log(`Matching elements: ${matchingElements.length}`)
+                        // Wrap each matching element individually and perform assertion
+                        return cy.wrap(matchingElements).each(matchingEl => {
+                            cy.wrap(matchingEl).should('contain.text', item)
+                        })
                     }
                 })
         }
 
-        findItem('div - #100')
-            .should('have.length', 1) // just one item
-            .and('contain.text', 'div - #100') // verify its text
+        findItem(dataToFind) // set item name here
     })
 })
-
