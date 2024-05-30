@@ -13,4 +13,8 @@ describe('Shifting Content tests', () => {
             expect($img[0].naturalWidth).to.be.greaterThan(0)
         })
     })
+    it('Finds the line "Important Information You\'re Looking For"', () => {
+        cy.visit('/shifting_content/list')
+        cy.get('.large-6').contains('Important Information You\'re Looking For')
+    })
 })
