@@ -47,4 +47,23 @@ describe('Sortable Data Tables tests', () => {
         .find('a').last()
         .click
     })
+    // from https://stackoverflow.com/questions/56784593/assert-sorting-in-an-table-using-cypress
+    it('Checks that the first table has been sorted by Due amount', () => {
+        function getColumnAsArray() {
+            let cellContents = []
+            return new Cypress.Promise(resolve => {
+                cy.get("#table1")
+                .children()
+                .each(($el, $index) => {
+                    // select chosen colum index here
+                    if (...) {
+                        cellContents.push(el.text())
+                    }
+                })
+                .then(() => resolve(cellContents))
+            })
+        }
+    })
+
 })
+
