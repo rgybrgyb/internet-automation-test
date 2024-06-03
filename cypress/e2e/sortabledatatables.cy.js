@@ -10,26 +10,48 @@ describe('Sortable Data Tables tests', () => {
             cy.expect(row.length -1 ).to.eq(4)
         })
     })
-    it('Checks that the first table has been sorted by Due amount', () => {
-        cy.get('#table1 > thead > tr > :nth-child(4) > span').click()
+    it('Sorts the first table by Due then asserts the contents are sorted', () => {
         cy.get('#table1')
-        .within(() => {
-            const toStrings = (cells$) => _.map(cells$, 'textContent')
-            const toNumbers = (due) => _.map(due, Number)
+        .contains('Due')
+        .click()
 
-            cy.get('')
-            .then(toStrings)
-            .then(toNumbers)
-            .then((due) => {
-                const sorted = _.sortBy(due)
+        cy.get('#table1')
+        .should('exist')
+        .find('tr')
+        .should('have.length.greaterThan', 0)
+        .then(($trs) => {
+            const arrayOftd = $trs.map((i, tr) => {
+                const text = Cypress.$(tr).find('td').eq(3).text()
+                return parseFloat(text.replace(/[$,]/g, ''))
+              }).get()
 
-                expect(due, 'cells are sorted 📈').to.deep.equal(sorted)
-            })
-        })
-    })
-    it('Locates table cell at 3rd Column, 4th Row and check the content is "Adipisci3"', () => {
+            const test = [...arrayOftd].sort((a, b) => a - b)          
+            expect(arrayOftd).to.deep.equal(test)
+          })
+       })
+       it('Sorts the first table by Last Name then asserts the contents are sorted', () => {
+        cy.get('#table1')
+        .contains('Last Name')
+        .click()
+
+        cy.get('#table1')
+        .should('exist')
+        .find('tr')
+        .should('have.length.greaterThan', 0)
+        .then(($trs) => {
+            const arrayOftd = $trs.map((i, tr) => {
+                return Cypress.$(tr).find('td').eq(0).text().trim()
+              }).get()
+
+            const test = [...arrayOftd].sort()          
+            expect(arrayOftd).to.deep.equal(test)
+          })
+       })
+    
+        it('Locates table cell at 3rd Column, 4th Row and check the content is "Adipisci3"', () => {
         cy.get('table')
         .find('tr').eq(4)
+
         .find('td').eq(2)
         .contains('Adipisci3')
     })
@@ -39,6 +61,7 @@ describe('Sortable Data Tables tests', () => {
         .find('td').last()
         .find('a').first()
         .click
+        cy.location().contains('#edit')
     })
     it('Locates table cell in last column, 5th row and clicks "delete"', () => {
         cy.get('table')
@@ -46,23 +69,8 @@ describe('Sortable Data Tables tests', () => {
         .find('td').last()
         .find('a').last()
         .click
-    })
-    // from https://stackoverflow.com/questions/56784593/assert-sorting-in-an-table-using-cypress
-    it('Checks that the first table has been sorted by Due amount', () => {
-        function getColumnAsArray() {
-            let cellContents = []
-            return new Cypress.Promise(resolve => {
-                cy.get("#table1")
-                .children()
-                .each(($el, $index) => {
-                    // select chosen colum index here
-                    if (...) {
-                        cellContents.push(el.text())
-                    }
-                })
-                .then(() => resolve(cellContents))
-            })
-        }
+        cy.location().contains('#delete')
+        
     })
 
 })

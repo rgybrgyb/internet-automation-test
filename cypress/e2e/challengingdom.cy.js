@@ -17,18 +17,24 @@ describe('Challenging DOM test', () => {
         .find('td').eq(2)
         .contains('Adipisci3')
     })
-    it('Locates table cell in last column, last row and clicks "edit"', () => {
+    it('Locates table cell in last column, last row and clicks "edit", then asserts URL change', () => {
         cy.get('table')
         .find('tr').last()
         .find('td').last()
         .find('a').first()
         .click
+        cy.location().should((loc) => {
+            expect(loc.pathname).to.include('/#edit')
+          })
     })
-    it('Locates table cell in last column, 5th row and clicks "delete"', () => {
+    it('Locates table cell in last column, 5th row and clicks "delete", then asserts URL change', () => {
         cy.get('table')
         .find('tr').eq(5)
         .find('td').last()
         .find('a').last()
         .click
-    })
+        cy.location().should((loc) => {
+            expect(loc.pathname).to.include('/#delete')
+          })
+})
 })
