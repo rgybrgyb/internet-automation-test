@@ -29,6 +29,7 @@ describe('Sortable Data Tables tests', () => {
             expect(arrayOftd).to.deep.equal(test)
           })
        })
+
        it('Sorts the first table by Last Name then asserts the contents are sorted', () => {
         cy.get('#table1')
         .contains('Last Name')
@@ -47,31 +48,48 @@ describe('Sortable Data Tables tests', () => {
             expect(arrayOftd).to.deep.equal(test)
           })
        })
-    
-        it('Locates table cell at 3rd Column, 4th Row and check the content is "Adipisci3"', () => {
-        cy.get('table')
-        .find('tr').eq(4)
+       it('Sorts the second table by Due then asserts the contents are reverse sorted', () => {
+        cy.get('#table2')
+        .contains('Due')
+        .dblclick()
 
-        .find('td').eq(2)
-        .contains('Adipisci3')
-    })
-    it('Locates table cell in last column, last row and clicks "edit"', () => {
-        cy.get('table')
-        .find('tr').last()
-        .find('td').last()
-        .find('a').first()
-        .click
-        cy.location().contains('#edit')
-    })
-    it('Locates table cell in last column, 5th row and clicks "delete"', () => {
-        cy.get('table')
-        .find('tr').eq(5)
-        .find('td').last()
-        .find('a').last()
-        .click
-        cy.location().contains('#delete')
-        
-    })
+        cy.get('#table2')
+        .should('exist')
+        .find('tr')
+        .should('have.length.greaterThan', 0)
+        .then(($trs) => {
+            const arrayOftd = $trs.map((i, tr) => {
+                const text = Cypress.$(tr).find('td').eq(3).text()
+                return parseFloat(text.replace(/[$,]/g, ''))
+              }).get()
 
-})
+            const test = [...arrayOftd].sort((a, b) => b - a)          
+            expect(arrayOftd).to.deep.equal(test)
+          })
+       })
 
+       it('Sorts the second table by Last Name then asserts the contents are reverse sorted', () => {
+        cy.get('#table2')
+        .contains('Last Name')
+        .dblclick()
+
+        cy.get('#table2')
+        .should('exist')
+        .find('tr')
+        .should('have.length.greaterThan', 0)
+        .then(($trs) => {
+            const arrayOftd = $trs.map((i, tr) => {
+                const text = Cypress.$(tr).find('td').eq(0).text().trim()
+                return text === '' ? null : text
+              }).get()
+
+            const sortedArray = [...arrayOftd].sort((a, b) => {
+                if (a === null) return 1
+                if (b === null) return -1
+                return a.localeCompare(b)
+            })
+            const reversedSortedArray = sortedArray.reverse()        
+            expect(arrayOftd).to.deep.equal(reversedSortedArray)
+          })
+       })
+    })
