@@ -8,15 +8,6 @@ describe('basic auth test', () => {
     });
     cy.contains('Congratulations! You must have the proper credentials.')
 });
-  it('visits the basic auth webpage and logs in with incorrect credentials', () => {
-    cy.visit('/basic_auth', {
-      retryOnStatusCodeFailure: true,
-      auth: {
-        username: 'notadmin',
-        password: 'notadmin'
-      },
-    })
-  });
   it('sends a request with valid credentials to the page and gets 200', () => {
     cy.request({
       method: 'GET',

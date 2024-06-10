@@ -4,7 +4,7 @@ describe('Redirect Link tests', () => {
         cy.get('#redirect').click()
         cy.location('pathname').should('equal', '/status_codes')
     })
-    it('Clicks the 200 code link and asserts that a 200 response os recieved', () => {
+    it('Clicks the 200 code link and asserts that a 200 response is recieved', () => {
         cy.visit('/status_codes')
         // Setting up spying on requests
         cy.intercept('GET', '**200').as('get')

@@ -1,4 +1,5 @@
 // Drag and drop upload currently calls a 500 240524
+
 describe('File Upload test', () => {
     beforeEach(() => {
         cy.visit('/upload')

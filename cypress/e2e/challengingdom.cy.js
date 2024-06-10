@@ -22,19 +22,15 @@ describe('Challenging DOM test', () => {
         .find('tr').last()
         .find('td').last()
         .find('a').first()
-        .click
-        cy.location().should((loc) => {
-            expect(loc.pathname).to.include('/#edit')
-          })
+        .click()
+        cy.location('hash').should('include', '#edit')
     })
     it('Locates table cell in last column, 5th row and clicks "delete", then asserts URL change', () => {
         cy.get('table')
         .find('tr').eq(5)
         .find('td').last()
         .find('a').last()
-        .click
-        cy.location().should((loc) => {
-            expect(loc.pathname).to.include('/#delete')
-          })
+        .click()
+        cy.location('hash').should('include', '#delete')
 })
 })
