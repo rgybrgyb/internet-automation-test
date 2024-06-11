@@ -21,7 +21,7 @@ module.exports = defineConfig({
       })
     },
     baseUrl: 'https://the-internet.herokuapp.com',
-    // Remove downloadsFolder setting for public repo.
-    downloadsFolder: '/Users/paul/Desktop/Cypress Downloads',
+
+    downloadsFolder: 'cypress/downloads',
   },
 });
